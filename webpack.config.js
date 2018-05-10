@@ -1,10 +1,11 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const webpack = require('webpack');
+
 module.exports = {
     entry: {
         app: './src/index.js',
-        print: './src/print.js'
     },
     output: {
         filename: '[name].bundle.js',
@@ -15,7 +16,16 @@ module.exports = {
     // 提供了一个简单的 web 服务器，并且能够实时重新加载(live reloading)
     devServer: {
         // 以上配置告知 webpack-dev-server，在 localhost:8080 下建立服务，将 dist 目录下的文件，作为可访问文件。
-        contentBase: './dist'
+        contentBase: './dist',
+        hot: true
+    },
+    module: {
+        rules: [{
+            test: /\.css$/,
+            // 借助于 style-loader 的帮助，CSS 的模块热替换实际上是相当简单的。
+            // 当更新 CSS 依赖模块时，此 loader 在后台使用 module.hot.accept 来修补(patch) <style> 标签
+            use: ['style-loader', 'css-loader']
+        }]
     },
     plugins: [
         // HtmlWebpackPlugin 创建了一个全新的文件，所有的 bundle 会自动添加到 html 中。
@@ -23,6 +33,10 @@ module.exports = {
             title: 'Output Management'
         }),
         // 清理 /dist 文件夹
-        new CleanWebpackPlugin(['dist'])
+        new CleanWebpackPlugin(['dist']),
+        // 添加了 NamedModulesPlugin，以便更容易查看要修补(patch)的依赖
+        // new webpack.NamedModulesPlugin(),
+        // hot 热更新插件
+        new webpack.HotModuleReplacementPlugin()
     ]
 };
