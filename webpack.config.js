@@ -1,27 +1,21 @@
 const path = require('path');
-
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
 module.exports = {
-    entry: './src/index.js',
+    entry: {
+        app: './src/index.js',
+        print: './src/print.js'
+    },
     output: {
-        filename: 'bundle.js',
+        filename: '[name].bundle.js',
         path: path.resolve(__dirname, 'dist')
     },
-    module: {
-        rules: [
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader'
-                ]
-            },
-            {
-                test: /\.css$/,
-                use: [
-                    'style-loader',
-                    'css-loader'
-
-                ]
-            }
-        ]
-    }
+    plugins: [
+        // HtmlWebpackPlugin 创建了一个全新的文件，所有的 bundle 会自动添加到 html 中。
+        new HtmlWebpackPlugin({
+            title: 'Output Management'
+        }),
+        // 清理 /dist 文件夹
+        new CleanWebpackPlugin(['dist'])
+    ]
 };
