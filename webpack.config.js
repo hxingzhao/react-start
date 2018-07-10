@@ -3,7 +3,11 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const webpack = require('webpack');
 
+function resolve(dir) {
+    return path.join(__dirname, '.', dir);
+}
 module.exports = {
+    mode: "development",
     entry: {
         app: './src/index.js',
     },
@@ -20,8 +24,7 @@ module.exports = {
         hot: true
     },
     module: {
-        rules: [
-            {
+        rules: [{
                 test: /\.css$/,
                 // 借助于 style-loader 的帮助，CSS 的模块热替换实际上是相当简单的。
                 // 当更新 CSS 依赖模块时，此 loader 在后台使用 module.hot.accept 来修补(patch) <style> 标签
@@ -29,13 +32,8 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['@babel/preset-env']
-                    }
-                }
+                exclude: /node_modules/,
+                loader: "babel-loader"
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
