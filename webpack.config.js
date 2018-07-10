@@ -21,7 +21,8 @@ module.exports = {
     devServer: {
         // 以上配置告知 webpack-dev-server，在 localhost:8080 下建立服务，将 dist 目录下的文件，作为可访问文件。
         contentBase: './dist',
-        hot: true
+        hot: true,
+        port: 3000
     },
     module: {
         rules: [{
@@ -32,8 +33,18 @@ module.exports = {
             },
             {
                 test: /\.js$/,
-                exclude: /node_modules/,
-                loader: "babel-loader"
+
+                exclude: /(node_modules|bower_components)/,
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        presets: ['@babel/preset-env'],
+                        // babel 在每个文件都插入了辅助代码，使代码体积过大！
+                        // 引入 babel runtime 作为一个独立模块，来避免重复引入。
+                        // 安装 babel-plugin-transform-runtime 和 babel-runtime 这两个依赖
+                        plugins: ['@babel/transform-runtime'] 
+                    }
+                }
             },
             {
                 test: /\.(png|svg|jpg|gif)$/,
