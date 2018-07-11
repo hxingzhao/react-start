@@ -1,4 +1,4 @@
 export default function printMe() {
     console.log('Updating print.js...');
-    console.log(1);
+    console.log(1111);
 }
