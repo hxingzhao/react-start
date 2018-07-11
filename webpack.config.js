@@ -26,9 +26,9 @@ module.exports = {
         openPage: '', // 指定在打开浏览器时导航到的页面。
         hot: true, // 热更新
         port: 3000,
-        host: "localhost" // 如果你希望服务器外部可访问
+        host: "localhost", // 如果你希望服务器外部可访问
         compress: true, // 开发服务器是否启动gzip等压缩
-        inline: true // 应用程序启用内联模式(inline mode)。这意味着一段处理实时重载的脚本被插入到你的包(bundle)中
+        inline: true, // 应用程序启用内联模式(inline mode)。这意味着一段处理实时重载的脚本被插入到你的包(bundle)中
         proxy: {}// proxy URLs to backend development server
     },
     module: {
@@ -37,10 +37,21 @@ module.exports = {
                 // 借助于 style-loader 的帮助，CSS 的模块热替换实际上是相当简单的。
                 // 当更新 CSS 依赖模块时，此 loader 在后台使用 module.hot.accept 来修补(patch) <style> 标签
                 use: ['style-loader', 'css-loader']
-            },
-            {
+            },{
+                test: /\.scss$/,
+                use: [{
+                    loader: "style-loader"
+                }, {
+                    loader: "css-loader", options: {
+                        sourceMap: true
+                    }
+                }, {
+                    loader: "sass-loader", options: {
+                        sourceMap: true
+                    }
+                }]
+            },{
                 test: /\.js$/,
-
                 exclude: /(node_modules|bower_components)/,
                 use: {
                     loader: 'babel-loader',

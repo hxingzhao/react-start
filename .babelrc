@@ -1,5 +1,21 @@
 {
-  "presets": ["react", ["env", { "modules": false }]],
-  "plugins": ["transform-runtime", "transform-decorators-legacy", "react-hot-loader/babel"]
+  "presets": [
+    "react",
+    [
+      "env",{
+        "modules": false,
+        "targets": {
+          "browsers": [ ">0.25%", "not ie 11", "not op_mini all"]
+        },
+        "include": [],
+        "exclude": []
+      }
+    ]
+  ],
+  "plugins": [
+    "transform-runtime",
+    "transform-decorators-legacy",
+    "react-hot-loader/babel"
+  ],
+  "comments": false
 }
-
