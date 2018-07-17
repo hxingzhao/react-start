@@ -1,15 +1,18 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const MiniCssExtractPlugin = require("mini-css-extract-plugin") 
 const webpack = require('webpack');
+const ROOT_PATH = path.resolve(__dirname);
+const env = process.env.NODE_ENV;
+const svgDirs = [
+    path.resolve(ROOT_PATH, 'src/assets/svg') // 自己私人的 svg 存放目录
+];
 
-function resolve(dir) {
-    return path.join(__dirname, '.', dir);
-}
 module.exports = {
-    mode: "development", // "production" | "development" | "none"
+    mode: env === 'production' ? 'production' : 'development',
     entry: {
-        app: './src/index.js',
+        app: './src/app.jsx',
     },
     output: {
         filename: '[name].bundle.js',
@@ -33,43 +36,65 @@ module.exports = {
     },
     module: {
         rules: [{
-                test: /\.css$/,
-                // 借助于 style-loader 的帮助，CSS 的模块热替换实际上是相当简单的。
-                // 当更新 CSS 依赖模块时，此 loader 在后台使用 module.hot.accept 来修补(patch) <style> 标签
-                use: ['style-loader', 'css-loader']
-            },{
-                test: /\.scss$/,
-                use: [{
-                    loader: "style-loader"
-                }, {
-                    loader: "css-loader", options: {
-                        sourceMap: true
-                    }
-                }, {
-                    loader: "sass-loader", options: {
-                        sourceMap: true
-                    }
-                }]
-            },{
-                test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
-                use: {
-                    loader: 'babel-loader',
-                    options: {
-                        presets: ['babel-preset-env'],
-                        // babel 在每个文件都插入了辅助代码，使代码体积过大！
-                        // 引入 babel runtime 作为一个独立模块，来避免重复引入。
-                        // 安装 babel-plugin-transform-runtime 和 babel-runtime 这两个依赖
-                        plugins: ['babel-plugin-transform-runtime'] 
-                    }
+            test: /\.css$/,
+            include: [path.resolve('src')],
+            use: ['css-hot-loader', 'style-loader', 'css-loader', 'postcss-loader']
+        }, {
+            test: /\.scss$/,
+            use: [{
+                loader: "style-loader"
+            }, {
+                loader: "css-loader", options: {
+                    sourceMap: true
                 }
-            },
-            {
-                test: /\.(png|svg|jpg|gif)$/,
-                use: [
-                    'file-loader'
-                ]
+            }, {
+                loader: "sass-loader", options: {
+                    sourceMap: true
+                }
+            }]
+        }, {
+            test: /\.jsx?$/,
+            enforce: 'pre',
+            use: [
+                {
+                    loader: 'eslint-loader',
+                    options: { fix: true }
+                }
+            ],
+            include: [path.resolve(__dirname, 'src')], // 指定检查的目录
+            exclude: /node_modules/
+        },
+        {
+            test: /\.jsx?$/, // 用babel编译jsx和es6
+            include: [path.resolve(__dirname, 'src')], // 指定检查的目录
+            exclude: /node_modules/,
+            loader: 'babel-loader',
+            options: {
+                cacheDirectory: true,
+                presets: ['react', 'stage-2', ['env', { modules: false }]],
+                // modules关闭 Babel 的模块转换功能，保留原本的 ES6 模块化语法
+                plugins: ['transform-runtime', 'transform-decorators-legacy', 'react-hot-loader/babel']
             }
+        },
+        {
+            test: /\.(png|svg|jpg|gif)$/,
+            use: [
+                'file-loader'
+            ]
+        },
+        {
+            test: /\.(woff|woff2|eot|ttf)(\?.*$|$)/,
+            use: ['url-loader']
+        },
+        {
+            test: /\.(svg)$/i,
+            use: ['svg-sprite-loader'],
+            include: svgDirs // 把 svgDirs 路径下的所有 svg 文件交给 svg-sprite-loader 插件处理
+        },
+        {
+            test: /\.(png|jpg|gif)$/,
+            use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]']
+        }
         ]
     },
     plugins: [
@@ -86,11 +111,14 @@ module.exports = {
         new webpack.HotModuleReplacementPlugin(),
         // 忽略掉 d.ts 文件，避免因为编译生成 d.ts 文件导致又重新检查触发重编译。
         // new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]) 
+        new MiniCssExtractPlugin({
+            filename: 'css/[name].css'
+          }),
     ],
     watch: true, // 这意味着在初始构建之后，webpack 将继续监听任何已解析文件的更改。Watch 模式默认关闭。
     watchOptions: {
-      ignored: /node_modules/, // 忽略不用监听变更的目录，监听大量文件系统会导致大量的 CPU 或内存占用。
-      aggregateTimeout: 500, // 防止重复保存频繁重新编译,500毫米内重复保存不打包
-      poll: 1000 // 每秒检查一次变动 指定毫秒为单位进行轮询
+        ignored: /node_modules/, // 忽略不用监听变更的目录，监听大量文件系统会导致大量的 CPU 或内存占用。
+        aggregateTimeout: 500, // 防止重复保存频繁重新编译,500毫米内重复保存不打包
+        poll: 1000 // 每秒检查一次变动 指定毫秒为单位进行轮询
     }
 };
