@@ -14,3 +14,9 @@
 Node >= 8.x
 NPM >= 5.x
 ```
+
+### step 1:
+`npm run dll`
+
+### step 2:
+`npm start` or `npm run start`
