@@ -56,16 +56,25 @@ module.exports = WebpackMerge(
           },
           {
             test: /\.(woff|woff2|eot|ttf)(\?.*$|$)/,
-            use: ['url-loader']
+            use: ['url-loader'],
+            exclude: [svgDirs]
+          },
+          {
+            test: /\.(png|jpg|gif)$/,
+            // use: [
+            //   {
+            //     loader: 'url-loader',
+            //     options: {
+            //       limit: 8192
+            //     }
+            //   }
+            // ]
+            use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]'],
           },
           {
             test: /\.(svg)$/i,
             use: ['svg-sprite-loader'],
             include: svgDirs // 把 svgDirs 路径下的所有 svg 文件交给 svg-sprite-loader 插件处理
-          },
-          {
-            test: /\.(png|jpg|gif)$/,
-            use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]']
           }
         ]
       },
