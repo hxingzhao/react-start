@@ -48,6 +48,7 @@ module.exports = WebpackMerge(
                   plugins: [
                     'transform-runtime',
                     'transform-decorators-legacy',
+                    "transform-class-properties",
                     'react-hot-loader/babel'
                   ]
                 }
@@ -113,7 +114,7 @@ module.exports = WebpackMerge(
   
       resolve: {
         modules: ['node_modules', path.join(ROOT_PATH, './node_modules')],
-        extensions: ['.js', '.jsx', '.less', '.scss', '.json'],
+        extensions: ['.js', '.jsx', '.scss', '.json'],
         alias: {
           components: path.resolve(APP_PATH, './components')
         }

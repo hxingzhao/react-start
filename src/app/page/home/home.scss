@@ -1,0 +1,83 @@
+.Home {
+    text-align: center;
+    .Home-header {
+      background-color: #222;
+      height: 320px;
+      padding: 20px;
+      margin-bottom: 20px;
+      color: white;
+      .Home-logo {
+        margin: 10px 0;
+        animation: Home-logo-spin infinite 16s linear;
+        height: 260px;
+        border-radius: 50%;
+      }
+    }
+  
+    .Home-intro {
+      width: 680px;
+      margin: 0 auto;
+      color: gray;
+      font-style: italic;
+      font-size: 16px;
+      text-align: left;
+      line-height: 1.5;
+      span {
+        display: block;
+        margin-top: 12px;
+        text-align: right;
+      }
+    }
+    .go-dir {
+      display: inline-block;
+      margin-top: 60px;
+      cursor: pointer;
+      font-style: italic;
+      font-size: 24px;
+      animation: go-zoom infinite 1.4s linear; 
+      a {
+        color: gray;
+      }
+    }
+    @keyframes go-zoom {
+      0% {
+        transform: scale(1);
+        opacity: 0.1;
+      }
+      25% {
+        transform: scale(1.5);
+        opacity: 1;
+      }
+      50% {
+        transform: scale(1);
+        opacity: 0.1;
+      }
+      75% {
+        transform: scale(1.5);
+        opacity: 1;
+      }
+      100% {
+        transform: scale(1);
+        opacity: 0.1;
+      }
+      
+    }
+    @keyframes Home-logo-spin {
+      0% {
+        transform: rotate(0deg);
+      }
+      25% {
+        transform: rotate(18deg);
+      }
+      50% {
+        transform: rotate(0deg);
+      }
+      75% {
+        transform: rotate(-18deg);
+      }
+      100% {
+        transform: rotate(0deg);
+      }
+    }
+  }
+  

@@ -1,6 +1,7 @@
 {
   "presets": [
     "react",
+    "stage-2",
     [
       "env",{
         "modules": false,
@@ -15,6 +16,7 @@
   "plugins": [
     "transform-runtime",
     "transform-decorators-legacy",
+    "transform-class-properties",
     "react-hot-loader/babel"
   ],
   "comments": false

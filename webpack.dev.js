@@ -7,9 +7,9 @@ const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 module.exports = {
   devtool: 'cheap-module-eval-source-map',
   mode: 'development',
-  entry: ['./src/index.jsx', 'react-hot-loader/patch'],
+  entry: ['./src/app.jsx', 'react-hot-loader/patch'],
   devServer: {
-    // 以下配置告知 webpack-dev-server，在 localhost:8080 下建立服务，将 dist 目录下的文件，作为可访问文件。
+    // 以下配置告知 webpack-dev-server，在 localhost:3000 下建立服务，将 dist 目录下的文件，作为可访问文件。
     publicPath: '/',  // 默认 publicPath 是 "/"，所以你的包(bundle)可以通过 http://localhost:3000/bundle.js 访问。
     contentBase: BUILD_PATH,
     open: true,
@@ -25,7 +25,6 @@ module.exports = {
   plugins: [
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]) // 忽略掉 d.ts 文件，避免因为编译生成 d.ts 文件导致又重新检查。
   ],
   watch: true, // 这意味着在初始构建之后，webpack 将继续监听任何已解析文件的更改。Watch 模式默认关闭。
   watchOptions: {
