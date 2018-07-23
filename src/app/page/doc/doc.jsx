@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Link, Route } from 'react-router-dom';
 import './doc.scss';
-import Game from 'game';
+import Game from './components/game/game';
 export default class Doc extends Component {
   render() {
     return (
