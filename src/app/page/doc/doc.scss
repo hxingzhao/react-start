@@ -1,0 +1,17 @@
+header {
+    text-align: center;
+    height: 60px;
+    background: #001529;
+    color: hsla(0,0%,100%,.65);
+    .active {
+        color: #fff;
+    }
+    .home { 
+        display: block;
+        cursor: pointer;
+        width: 80px;
+        height: 100%;
+        line-height: 60px;
+        color: hsla(0,0%,100%,.65);
+    }
+}

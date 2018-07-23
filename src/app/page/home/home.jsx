@@ -1,8 +1,8 @@
-import * as React from "react";
-import "./home.scss";
-import { Link } from "react-router-dom";
+import * as React from 'react';
+import './home.scss';
+import { Link } from 'react-router-dom';
 // const logo = require("./assets/svg/logo.svg");
-const logo = require("../../../assets/img/luv.jpg");
+const logo = require('../../../assets/img/luv.jpg');
 function Home() {
   return (
     <div className="Home">
