@@ -5,7 +5,6 @@ const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
 const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const WebpackVersionPlugin = require('webpack-version-plugin');
 const WebpackMerge = require('webpack-merge');
-
 const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'src');
 const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
@@ -15,9 +14,7 @@ const svgDirs = [
 ];
 
 module.exports = WebpackMerge(
-  process.env.NODE_ENV === 'dev'
-    ? require('./webpack.dev.js')
-    : require('./webpack.build.js'),
+  process.env.NODE_ENV === 'dev' ? require('./webpack.dev.js') : require('./webpack.build.js'),
   {
     output: {
       path: BUILD_PATH, // 编译到当前目录
@@ -34,7 +31,7 @@ module.exports = WebpackMerge(
           use: [
             'css-hot-loader',
             MiniCssExtractPlugin.loader,
-            'css-loader?importLoaders=1',
+            'css-loader?importLoaders=1', // 在 css-loader 前应用的 loader 的数量
             'sass-loader'
           ]
         },
@@ -43,12 +40,12 @@ module.exports = WebpackMerge(
           include: [APP_PATH], // 指定检查的目录
           exclude: /node_modules/,
           use: [
-            'cache-loader',
-            'thread-loader',
+            'cache-loader', // 在一些性能开销较大的 loader 之前添加此 loader，以将结果缓存到磁盘里。
+            'thread-loader', // 把这个 loader 放置在其他 loader 之前， 放置在这个 loader 之后的 loader 就会在一个单独的 worker 池(worker pool)中运行
             {
               loader: 'babel-loader',
               options: {
-                cacheDirectory: true,
+                cacheDirectory: true, //使用默认缓存目录，尝试读取缓存，来避免在每次执行时，可能产生的、高性能消耗的 Babel 重新编译过程
                 // modules关闭 Babel 的模块转换功能，保留原本的 ES6 模块化语法
                 presets: ['react', 'stage-2', ['env', { modules: false }]],
                 plugins: [
@@ -68,14 +65,6 @@ module.exports = WebpackMerge(
         },
         {
           test: /\.(png|jpg|gif)$/,
-          // use: [
-          //   {
-          //     loader: 'url-loader',
-          //     options: {
-          //       limit: 8192
-          //     }
-          //   }
-          // ]
           use: ['url-loader?limit=8192&name=images/[hash:8].[name].[ext]']
         },
         {
@@ -93,11 +82,11 @@ module.exports = WebpackMerge(
         inject: true, // 允许插件修改哪些内容，包括head与body
         hash: true // 为静态资源生成hash值
       }),
-
+      // 该插件将给定的JS或CSS文件添加到Webpack知道的文件中，并将其放入资源列表中，html-webpack-plugin注入生成的html。
       new AddAssetHtmlPlugin({
         filepath: path.resolve(ROOT_PATH, 'vendor/*.dll.js')
       }),
-
+      // 在这引用之前打包出来的依赖
       new webpack.DllReferencePlugin({
         context: ROOT_PATH,
         manifest,
@@ -117,7 +106,6 @@ module.exports = WebpackMerge(
         }
       })
     ],
-
     resolve: {
       modules: ['node_modules', path.join(ROOT_PATH, './node_modules')],
       extensions: ['.js', '.jsx', '.scss', '.json'],

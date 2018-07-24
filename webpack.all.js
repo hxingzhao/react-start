@@ -17,7 +17,7 @@ const ROOT_PATH = path.resolve(__dirname);
 const APP_PATH = path.resolve(ROOT_PATH, 'src');
 const BUILD_PATH = path.resolve(ROOT_PATH, 'build');
 const svgDirs = [
-  path.resolve(__dirname, 'src/my-project-svg-foler') // 自己私人的 svg 存放目录
+  path.resolve(__dirname, 'src/assets/svg') // 自己私人的 svg 存放目录
 ];
 
 const env = process.env.NODE_ENV;
@@ -26,7 +26,7 @@ const { theme } = require('./package.json');
 
 module.exports = {
   devtool: env === 'production' ? false : 'cheap-module-eval-source-map',
-  entry: { app: ['./src/index.tsx', 'react-hot-loader/patch'] },
+  entry: { app: ['./src/index.jsx', 'react-hot-loader/patch'] },
   mode: env === 'production' ? 'production' : 'development',
   output: {
     path: BUILD_PATH, // 编译到当前目录
@@ -132,43 +132,6 @@ module.exports = {
         }
       },
       {
-        test: /\.tsx?$/, // 用babel编译jsx和es6
-        include: [path.resolve(__dirname, 'src')], // 指定检查的目录
-        exclude: /node_modules/,
-        use: [
-          {
-            loader: 'awesome-typescript-loader',
-            options: {
-              useBabel: true,
-              babelOptions: {
-                babelrc: false /* Important line */,
-                presets: ['react', 'stage-2', ['env', { modules: false }]], // 关闭 Babel 的模块转换功能，保留原本的 ES6 模块化语法
-                plugins: ['transform-runtime', 'react-hot-loader/babel']
-              }
-            }
-          }
-        ]
-        /*         use: [
-          'cache-loader',
-          'thread-loader',
-          {
-            loader: 'babel-loader',
-            options: {
-              cacheDirectory: true,
-              presets:["react", "stage-2", ["env", { "modules": false }]],//关闭 Babel 的模块转换功能，保留原本的 ES6 模块化语法
-              plugins: ['transform-runtime', 'react-hot-loader/babel']
-            }
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              happyPackMode: true,
-              transpileOnly: true
-            }
-          }
-        ] */
-      },
-      {
         test: /\.(woff|woff2|eot|ttf)(\?.*$|$)/,
         use: ['url-loader']
       },
@@ -199,6 +162,7 @@ module.exports = {
       disable: false,
       allChunks: true
     }),
+    // 在这引用之前打包出来的依赖
     new webpack.DllReferencePlugin({
       context: __dirname,
       manifest,
@@ -217,7 +181,7 @@ module.exports = {
     }),
     new webpack.NamedModulesPlugin(),
     new webpack.HotModuleReplacementPlugin(),
-    new webpack.WatchIgnorePlugin([/\.js$/, /\.d\.ts$/]), // 忽略掉 d.ts 文件，避免因为编译生成 d.ts 文件导致又重新检查。
+    new webpack.WatchIgnorePlugin([/\.js$/]), // 忽略掉 d.ts 文件，避免因为编译生成 d.ts 文件导致又重新检查。
     new webpack.optimize.ModuleConcatenationPlugin(),
     // 3.0新功能 范围提升 （Scope Hoisting ）,作用域提升，这是在webpack3中所提出来的。它会使代码体积更小，因为函数申明语句会产生大量代码.
     new WebpackVersionPlugin({
@@ -229,14 +193,13 @@ module.exports = {
 
   resolve: {
     modules: ['node_modules', path.join(__dirname, './node_modules')],
-    extensions: ['.js', '.jsx', '.ts', '.tsx', '.less', '.scss', '.json'],
+    extensions: ['.js', '.jsx', '.less', '.scss', '.json'],
     alias: {
       components: path.resolve(APP_PATH, './components')
     }
   },
-
+  // 防止将某些 import 的包(package)打包到 bundle 中，而是在运行时(runtime)再去从外部获取这些扩展依赖 例如，从 CDN 引入 jQuery，而不是把它打包.
   externals: {
-    zepto: 'Zepto'
   },
   watch: env === 'development',
   watchOptions: {

@@ -1,7 +1,6 @@
 {
   "extends": ["eslint-config-airbnb", "eslint-plugin-react"],
   "rules": {
-    "arrow-parens": false,
     "arrow-return-shorthand": [false],
     "comment-format": [true, "check-space"],
     "import-blacklist": [true, "rxjs"],
@@ -15,7 +14,7 @@
     "no-any": false,
     "no-empty-interface": false,
     "no-import-side-effect": false,
-    "no-namespace": false,
+    "no-namespace": false,  
     "no-console": false,
     "no-inferrable-types": [true, "ignore-params", "ignore-properties"],
     "no-invalid-this": [true, "check-function-in-method"],
