@@ -1,17 +1,23 @@
-header {
-    text-align: center;
-    height: 60px;
-    background: #001529;
-    color: hsla(0,0%,100%,.65);
-    .active {
-        color: #fff;
-    }
-    .home { 
-        display: block;
-        cursor: pointer;
-        width: 80px;
-        height: 100%;
-        line-height: 60px;
-        color: hsla(0,0%,100%,.65);
-    }
+.logo {
+  display: block;
+  cursor: pointer;
+  width: 120px;
+  height: 32px;
+  background: rgba(255, 255, 255, 0.2);
+  margin: 16px auto 6px auto;
+  line-height: 32px;
+  text-align: center;
+  color: #fff;
+  letter-spacing: 1px;
+  font-size: 16px;
+}
+.ant-breadcrumb {
+  margin: 12px 0 12px 20px;
+}
+.content {
+  padding: 24px;
+  h2 {
+    margin-bottom: 10px;
+    color: #6d6d6d;
+  }
 }

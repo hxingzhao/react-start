@@ -24,7 +24,8 @@ module.exports = WebpackMerge(
       rules: [
         {
           test: /\.css$/,
-          use: ['style-loader', 'css-loader']
+          include: [path.resolve('src')],
+          use: ['css-hot-loader', 'style-loader', 'css-loader']
         },
         {
           test: /\.scss$/,
