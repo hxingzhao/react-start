@@ -71,22 +71,24 @@ export default class Game extends Component {
     }
     squares[i] = this.state.xIsNext ? 'X' : 'O';
     this.setState({
-      history: history.concat([{
-        squares: squares
-      }]),
+      history: history.concat([
+        {
+          squares: squares
+        }
+      ]),
       stepNumber: history.length,
-      xIsNext: !this.state.xIsNext,
+      xIsNext: !this.state.xIsNext
     });
   }
 
   /**
    * 返回指定步数
-   * @param {Number} step 
+   * @param {Number} step
    */
   jumpTo(step) {
     this.setState({
       stepNumber: step,
-      xIsNext: (step % 2) ? false : true,
+      xIsNext: step % 2 ? false : true
     });
   }
 
@@ -110,8 +112,9 @@ export default class Game extends Component {
     }
     return (
       <div className="game">
+        <h2>三子棋</h2>
         <div className="game-board">
-          <Board squares={current.squares} onClick={(i) => this.handleClick(i)} />
+          <Board squares={current.squares} onClick={i => this.handleClick(i)} />
         </div>
         <div className="game-info">
           <div>{status}</div>

@@ -1,8 +1,10 @@
 import React from 'react';
 import { Layout, Menu, Breadcrumb, Icon } from 'antd';
-import { Link } from 'react-router-dom'
+import { Link, Route } from 'react-router-dom';
 import './doc.scss';
-import Game from './components/game/game'
+import Game from './components/game/game';
+import Toggle from './components/toggle/toggle';
+import Clock from './components/clock/clock';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -19,7 +21,7 @@ export default class Doc extends React.Component {
   };
   /**
    * 选择导航栏事件
-   * @param {menu} item 
+   * @param {menu} item
    */
   selectMenu(item) {
     console.log(item);
@@ -32,8 +34,15 @@ export default class Doc extends React.Component {
           collapsed={this.state.collapsed}
           onCollapse={this.onCollapse}
         >
-          <Link to='/home' className="logo">Home</Link>
-          <Menu theme="dark" defaultSelectedKeys={['1']} mode="inline" onClick={(menu) => this.selectMenu(menu)}>
+          <Link to="/home" className="logo">
+            Home
+          </Link>
+          <Menu
+            theme="dark"
+            defaultSelectedKeys={['game']}
+            mode="inline"
+            onClick={menu => this.selectMenu(menu)}
+          >
             <Menu.Item key="game">
               <Icon type="pie-chart" />
               <span>Game</span>
@@ -80,14 +89,13 @@ export default class Doc extends React.Component {
               <Breadcrumb.Item>User</Breadcrumb.Item>
               <Breadcrumb.Item>Bill</Breadcrumb.Item>
             </Breadcrumb> */}
-            <div className='content'>
-              <h2>三子棋</h2>
-              <Game/>
+            <div className="content">
+              <Route path="/doc/game" component={Game} />
+              <Route path="/doc/clock" component={Clock} />
+              <Route path="/doc/clock" component={Toggle} />
             </div>
           </Content>
-          <Footer style={{ textAlign: 'center' }}>
-            、
-          </Footer>
+          <Footer style={{ textAlign: 'center' }}>、</Footer>
         </Layout>
       </Layout>
     );
