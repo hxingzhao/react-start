@@ -3,7 +3,6 @@ import { Layout, Menu, Breadcrumb, Icon } from 'antd';
 import { Link, Route } from 'react-router-dom';
 import './doc.scss';
 import Game from './components/game/game';
-import Toggle from './components/toggle/toggle';
 import Clock from './components/clock/clock';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
@@ -92,7 +91,6 @@ export default class Doc extends React.Component {
             <div className="content">
               <Route path="/doc/game" component={Game} />
               <Route path="/doc/clock" component={Clock} />
-              <Route path="/doc/clock" component={Toggle} />
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>、</Footer>

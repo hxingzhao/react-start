@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import Toggle from '../toggle/toggle'
 export default class Clock extends Component {
   interval;
   constructor(props) {
@@ -25,6 +25,7 @@ export default class Clock extends Component {
       <div>
         <h1>clock</h1>
         <h2>It is {this.state.date.toLocaleTimeString()}</h2>
+        <Toggle/>
       </div>
     );
   }

@@ -1,6 +1,8 @@
 import * as React from 'react';
 import './home.scss';
 import { Link } from 'react-router-dom';
+import DemoBlock from '../../components/button/button';
+import demos from '../../components/button/demo';
 // const logo = require("./assets/svg/logo.svg");
 const logo = require('../../../assets/img/luv.jpg');
 function Home() {
@@ -23,6 +25,12 @@ function Home() {
       <span className="go-dir">
         <Link to="/doc">Start</Link>
       </span>
+      {/* <DemoBlockk
+          background={demos[3].background}
+          text={demos[3].text}
+          buttonStyles={demos[3].buttonStyles}
+          buttonOptions={demos[3].buttonOptions}
+        /> */}
     </div>
   );
 }
