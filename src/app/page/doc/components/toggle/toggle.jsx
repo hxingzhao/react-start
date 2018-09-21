@@ -44,6 +44,7 @@ export default class LoginControl extends Component {
       <div>
         <Greeting isLoggedIn={isLoggedIn} />
         {button}
+        <input ref={this.props.inputRef} type="text"/>
       </div>
     );
   }

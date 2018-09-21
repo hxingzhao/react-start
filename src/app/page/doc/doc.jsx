@@ -4,6 +4,8 @@ import { Link, Route } from 'react-router-dom';
 import './doc.scss';
 import Game from './components/game/game';
 import Clock from './components/clock/clock';
+import ListOfTenThings from './components/children';
+import RefCall from './components/refcall/refcall';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -91,6 +93,8 @@ export default class Doc extends React.Component {
             <div className="content">
               <Route path="/doc/game" component={Game} />
               <Route path="/doc/clock" component={Clock} />
+              <Route path="/doc/children" component={ListOfTenThings} />
+              <Route path="/doc/refCall" component={RefCall} />
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>、</Footer>
