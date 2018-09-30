@@ -6,6 +6,7 @@ import Game from './components/game/game';
 import Clock from './components/clock/clock';
 import ListOfTenThings from './components/children';
 import RefCall from './components/refcall/refcall';
+import MyFragment from './components/fragment/fragment';
 const { Header, Content, Footer, Sider } = Layout;
 const SubMenu = Menu.SubMenu;
 
@@ -95,6 +96,7 @@ export default class Doc extends React.Component {
               <Route path="/doc/clock" component={Clock} />
               <Route path="/doc/children" component={ListOfTenThings} />
               <Route path="/doc/refCall" component={RefCall} />
+              <Route path="/doc/myFragment" component={MyFragment} />
             </div>
           </Content>
           <Footer style={{ textAlign: 'center' }}>、</Footer>

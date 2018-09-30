@@ -168,6 +168,168 @@ shouldComponentUpdate(nextProps,nextState) {
     === 将数字值-0和+0视为相等，并认为Number.NaN不等于NaN。但Object.is()相等。 
 ```
 
+### Fragments
 
+#### 带 key 的 Fragments
+```
+    * <></> 语法不能接受键值或属性。
 
+    如果你需要一个带 key 的片段，你可以直接使用 <React.Fragment /> 。 
+    一个使用场景是映射一个集合为一个片段数组 — 例如：创建一个描述列表：
 
+    function Glossary(props) {
+        return (
+            <dl>
+            {props.items.map(item => (
+                // 没有`key`，将会触发一个key警告
+                <React.Fragment key={item.id}>
+                <dt>{item.term}</dt>
+                <dd>{item.description}</dd>
+                </React.Fragment>
+            ))}
+            </dl>
+        );
+    }
+
+    这用法类似于ng和vue里的template
+```
+### 路由
+
+```
+    完全匹配与不完全匹配 exact 
+    <Switch> 
+        <Route exact path='/' render={() => <div>HomePage</div>} />
+        <Route exact path='/list' render={() => <div>listPage</div>} />
+        <Route render={() => <div>404Page</div>} />
+
+    </Switch>
+
+    用Switch减少不必要的匹配，提供性能。
+
+    // 跳转到指定路由
+    <NavLink exact to="/">Home</NavLink>
+
+    // url路由传参 必填参数
+    <Route exact path="/detail/:id" component={Detail} />
+    // url路由传参 可选参数
+    <Route exact path="/detail/:id?" component={Detail} />
+    // 获取路由带的参数
+    const Detail = ({ match }) => (
+        // 可以通过判断是否传递参数做相应的判断，很灵活。
+        <h2>
+            <span>id: </span>
+            <strong>{match.params.id}</strong>
+        </h2>
+    )
+    // 路由重定向
+    <Redirect to="/404" />
+    // !! 符号是强制转换为布尔型（boolean）
+
+```
+
+### 权限校验
+```
+import React, { Component } from 'react'
+import PropTypes from 'prop-types'
+import { Input, Button, Form } from '@ali/wind'
+import { Redirect } from 'dva/router'
+
+const LOGIN_STORAGE_KEY = 'loginState'
+
+class Login extends Component {
+  /**
+   * 使用 localStorage 模拟用户登录
+   * @param {String} username
+   */
+  static login() {
+    localStorage.setItem(LOGIN_STORAGE_KEY, JSON.stringify(true))
+  }
+
+  /**
+   * 模拟登出
+   */
+  static logout() {
+    localStorage.removeItem(LOGIN_STORAGE_KEY)
+  }
+
+  /**
+   * 判断是否已经登录
+   */
+  static hasLogin() {
+    return !!localStorage.getItem(LOGIN_STORAGE_KEY)
+  }
+
+  static propTypes = {
+    location: PropTypes.objectOf(PropTypes.any),
+  }
+
+  state = {
+    hasLogin: false,
+  }
+
+  static getDerivedStateFromProps() {
+    return {
+      // 注意: 由于使用了 hasLogin 这个带有副作用函数,
+      // getDerivedStateFromProps 不再是一个纯函数,
+      // 在实际的项目应用中, 不要尝试这样做.
+      // 应当使用受控组件将 hasLogin 做为 props 传递进来, 比如使用 Redux
+      // 在后面关于 model 的示例中, 我们将把这一段逻辑放到 Redux 中
+      hasLogin: Login.hasLogin(),
+    }
+  }
+
+  onClick = () => {
+    Login.login()
+    this.setState({ hasLogin: true })
+  }
+
+  getRedirectTo() {
+    const {
+      location: {
+        state: {
+          refer = '/',
+        } = {},
+      } = {},
+    } = this.props
+    return refer
+  }
+
+  render() {
+    // 如果已经登录直接跳转
+    if (this.state.hasLogin) {
+      return (
+        <Redirect to={this.getRedirectTo()} />
+      )
+    }
+
+    return (
+      <Form>
+        <Form.Item>
+          <Input placeholder="Username" />
+        </Form.Item>
+        <Form.Item>
+          <Input placeholder="Password" htmlType="password" />
+        </Form.Item>
+        <Form.Item>
+          <Button onClick={this.onClick}>Login</Button>
+        </Form.Item>
+      </Form>
+    )
+  }
+}
+
+const Logout = () => {
+  Login.logout()
+  return (
+    <Redirect to="/login" />
+  )
+}
+
+export default Login
+
+export {
+  Logout,
+}
+```
+
+### 到这里，你应该已经体会到了一部分 React Router 4 的分布式路由设计的哲学
