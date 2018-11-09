@@ -2,14 +2,15 @@ import React, { Component } from 'react';
 import Toggle from '../toggle/toggle'
 export default class Clock extends Component {
   interval;
-  constructor(props) {
-    super();
+  constructor(props, context) {
+    super(props);
     this.state = {
       date: new Date()
     };
     this.btnRef = React.createRef();
     this.h2Ref = React.createRef();
     this.btnClick = this.btnClick.bind(this);
+    console.log(context);
   }
   componentDidMount() {
     this.interval = setInterval(() => {
