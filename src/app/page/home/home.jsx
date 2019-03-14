@@ -23,7 +23,7 @@ function Home() {
                 <span>—— 马丁·路德·金</span>
             </p>
             <span className="go-dir">
-                <Link to="/doc">Start</Link>
+                <Link to="/doc/game">Start</Link>
             </span>
             {/* <DemoBlockk
           background={demos[3].background}

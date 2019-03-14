@@ -64,6 +64,7 @@
     "@ali/wind": "^2.3.1",
     "@ali/wind-rc-announcement": "^2.0.12",
     "@alife/dpl-console-design": "^2.10.1",
+    "@antv/g6": "^2.2.6",
     "babel-runtime": "^6.26.0",
     "classnames": "^2.2.6",
     "lodash": "^4.17.10",
@@ -71,6 +72,7 @@
     "react-dom": "^16.4.1",
     "react-redux": "^5.0.7",
     "react-router-dom": "^4.3.1",
-    "redux": "^4.0.0"
+    "redux": "^4.0.0",
+    "rxjs": "^6.3.3"
   }
 }
